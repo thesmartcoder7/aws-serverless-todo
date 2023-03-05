@@ -128,16 +128,3 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
-
-# package directories
-node_modules
-jspm_packages
-
-# Serverless directories
-.serverless
-
-# Webpack directories
-.webpack
-
-# Local DynamoDb
-.dynamodb
