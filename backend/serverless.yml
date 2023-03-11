@@ -1,8 +1,9 @@
 # DONE: Change the name of the org
-org: hadhad
+org: thesmartcoder
 app: serverless-todo-app
 service: serverless-todo-app
 frameworkVersion: "3"
+disabledDeprecations: CLI_OPTIONS_SCHEMA_V3
 
 plugins:
   - serverless-webpack
@@ -27,8 +28,10 @@ provider:
   environment:
     TODOS_TABLE: Todos-${self:provider.stage}
     CREATED_AT_INDEX: CreatedAtIndex
-    ATTACHMENT_S3_BUCKET: hadhad-serverless-todo-images-${self:provider.stage}
+    ATTACHMENT_S3_BUCKET: smartcode-serverless-todo-images-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
+    PROJECT_NAME: serverless-todo-app
+    INDEX_NAME: ${self:provider.environment.CREATED_AT_INDEX}
 
   logs:
     # Enable API Gateway logs
@@ -39,7 +42,7 @@ provider:
       Action:
         - xray:PutTelemetryRecords
         - xray:PutTraceSegments
-      Resource: '*'
+      Resource: "*"
 
   httpApi:
     cors: true
@@ -105,7 +108,7 @@ functions:
           request:
             schemas:
               application/json: ${file(models/update-todo-model.json)}
-          
+
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -113,11 +116,11 @@ functions:
           - dynamodb:GetItem
         Resource:
           - !Sub arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
-      
+
   addAttachmentUrl:
     tracing: true
     handler: src/lambda/s3/addAttachmentUrl.handler
-        
+
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -178,7 +181,7 @@ custom:
       migrate: true
     stages:
       - dev
-      
+
   documentation:
     api:
       info:
@@ -239,7 +242,6 @@ resources:
             Projection:
               ProjectionType: ALL # What attributes will be copied to an index
 
-
     # DONE: Complete the bucket properties below.
     # Do not forget to add the CorsConfiguration propoerty
     AttachmentsBucket:
@@ -248,8 +250,8 @@ resources:
         BucketName: ${self:provider.environment.ATTACHMENT_S3_BUCKET}
         NotificationConfiguration:
           LambdaConfigurations:
-          - Event: s3:ObjectCreated:*
-            Function: !GetAtt AddAttachmentUrlLambdaFunction.Arn
+            - Event: s3:ObjectCreated:*
+              Function: !GetAtt AddAttachmentUrlLambdaFunction.Arn
         CorsConfiguration:
           CorsRules:
             - AllowedOrigins:
@@ -263,8 +265,8 @@ resources:
                 - DELETE
                 - HEAD
               MaxAge: 3000
-              
-    AddAttachmentUrlPermission:
+
+    AddAttachmentUrlPermissionCLI_OPTIONS_SCHEMA_V3:
       Type: AWS::Lambda::Permission
       Properties:
         FunctionName: !Ref AddAttachmentUrlLambdaFunction
