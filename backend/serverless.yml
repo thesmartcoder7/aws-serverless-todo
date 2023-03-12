@@ -44,6 +44,15 @@ provider:
           Resource: "*"
 
 functions:
+  # Test function
+  hello:
+    handler: handler.hello
+    events:
+      - httpApi:
+          path: /
+          method: get
+
+  # Authentication funciton
   Auth:
     handler: src/lambda/auth/auth0Authorizer.handler
 
