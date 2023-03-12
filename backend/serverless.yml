@@ -1,4 +1,4 @@
-# TODO: Change the name of the org
+# TODO: Change the name of the org | done
 org: thesmartcoder
 app: serverless-todo-app
 service: serverless-todo-app
@@ -44,15 +44,8 @@ provider:
           Resource: "*"
 
 functions:
-  # Test function
-  hello:
-    handler: handler.hello
-    events:
-      - httpApi:
-          path: /
-          method: get
-  # Auth:
-  #   handler: src/lambda/auth/auth0Authorizer.handler
+  Auth:
+    handler: src/lambda/auth/auth0Authorizer.handler
 
   # TODO: Configure this function -
   # Provide iamRoleStatements property for performing Actions on DynamoDB
