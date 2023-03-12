@@ -34,16 +34,11 @@ provider:
     # Enable API Gateway logs
     restApi: true
 
-  # iamRoleStatements:
-  #   - Effect: Allow
-  #     Action:
-  #       - xray:PutTelemetryRecords
-  #       - xray:PutTraceSegments
-  #     Resource: '*'
   iamRoleStatements:
-    - Effect: "Allow"
+    - Effect: Allow
       Action:
-        - "*"
+        - xray:PutTelemetryRecords
+        - xray:PutTraceSegments
       Resource: "*"
 
   httpApi:
