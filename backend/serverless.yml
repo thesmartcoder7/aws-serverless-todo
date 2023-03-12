@@ -3,7 +3,6 @@ org: thesmartcoder
 app: serverless-todo-app
 service: serverless-todo-app
 frameworkVersion: "3"
-disabledDeprecations: CLI_OPTIONS_SCHEMA_V3
 
 plugins:
   - serverless-webpack
@@ -28,20 +27,23 @@ provider:
   environment:
     TODOS_TABLE: Todos-${self:provider.stage}
     CREATED_AT_INDEX: CreatedAtIndex
-    ATTACHMENT_S3_BUCKET: smartcode-serverless-todo-images-${self:provider.stage}
+    ATTACHMENT_S3_BUCKET: sls-todo-media-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
-    PROJECT_NAME: serverless-todo-app
-    INDEX_NAME: ${self:provider.environment.CREATED_AT_INDEX}
 
   logs:
     # Enable API Gateway logs
     restApi: true
 
+  # iamRoleStatements:
+  #   - Effect: Allow
+  #     Action:
+  #       - xray:PutTelemetryRecords
+  #       - xray:PutTraceSegments
+  #     Resource: '*'
   iamRoleStatements:
-    - Effect: Allow
+    - Effect: "Allow"
       Action:
-        - xray:PutTelemetryRecords
-        - xray:PutTraceSegments
+        - "*"
       Resource: "*"
 
   httpApi:
@@ -266,7 +268,7 @@ resources:
                 - HEAD
               MaxAge: 3000
 
-    AddAttachmentUrlPermissionCLI_OPTIONS_SCHEMA_V3:
+    AddAttachmentUrlPermission:
       Type: AWS::Lambda::Permission
       Properties:
         FunctionName: !Ref AddAttachmentUrlLambdaFunction
